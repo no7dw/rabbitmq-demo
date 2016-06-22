@@ -1,4 +1,5 @@
-var amqServerIp = "dockerip";
+#!/usr/bin/env node
+var amqServerIp = "localhost";
 var amqp = require('amqplib/callback_api');
 amqp.connect('amqp://' + amqServerIp  , function(err, conn) {
     if(err){
