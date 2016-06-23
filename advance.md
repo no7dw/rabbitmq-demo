@@ -1,10 +1,12 @@
 ### rabbitmq management advance
 
-#### install 
+#### management install 
 
 	rabbitmq-plugins enable rabbitmq_management
 
 visit : http://ali3:15672/
+管理页面的进程与rabbitmq-server 是分开的
+
 
 #### solve 401 
 
@@ -42,12 +44,12 @@ so where is the max ? see the following
 
 
 ### config advance  
-config
+[config manual][4]
 /etc/rabbitmq/rabbitmq.config
-[example][4]
+[example][5]
 
 #### 可以限制发送速度？
-no way
+no way？ flow control
 
 #### 如何做警报
     root@klgaliyun03:~# curl -i -u guest:guest http://localhost:15672/api/vhosts
@@ -67,19 +69,38 @@ no way
 不用rabbitmq 的话，log ==> 需要ELK 监控log，手动关闭某个节点或者关闭某些功能。
 
 ### 其他典型场景
-[see here][5]
+[see here][6]
 
 ### 其他用处
-[find bottle neck of your system][6]
+[find bottle neck of your system][7]
 
 ### Question
 如何需要req 有没有被处理？
 如何知道结果处理结果？
+rabbitmq-server 挂了怎么办？ -- HA
+
+### TBD
+ - vhost 
+ - queue 
+ - exchange
+ - publish(in/out)
+ - confirm
+ - deliver
+ - redelivered
+ - acknowledge
+
+ 
+### 更多参考
+[消息队列服务rabbitmq安装配置][8]
+[rabbitmq 集群高可用测试][9]
 
 
   [1]: http://7xk67t.com1.z0.glb.clouddn.com/init.jpg
   [2]: http://7xk67t.com1.z0.glb.clouddn.com/graph.jpg
   [3]: http://7xk67t.com1.z0.glb.clouddn.com/more2.jpg
-  [4]: https://github.com/rabbitmq/rabbitmq-server/blob/stable/docs/rabbitmq.config.example
-  [5]: https://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/
-  [6]: http://www.rabbitmq.com/blog/2014/04/14/finding-bottlenecks-with-rabbitmq-3-3/
+  [4]: https://www.rabbitmq.com/configure.html
+  [5]: https://github.com/rabbitmq/rabbitmq-server/blob/stable/docs/rabbitmq.config.example
+  [6]: https://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/
+  [7]: http://www.rabbitmq.com/blog/2014/04/14/finding-bottlenecks-with-rabbitmq-3-3/
+  [8]: http://www.ttlsa.com/linux/install-rabbitmq-on-linux/
+  [9]: http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html

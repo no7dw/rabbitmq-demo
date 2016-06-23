@@ -1,5 +1,20 @@
 # rabbitmq-demo
 
+### start log
+
+	klg@klgaliyun03:~/rabbitmq-demo/queues$ sudo !!
+	sudo rabbitmq-server 
+
+	              RabbitMQ 3.6.2. Copyright (C) 2007-2016 Pivotal Software, Inc.
+	  ##  ##      Licensed under the MPL.  See http://www.rabbitmq.com/
+	  ##  ##
+	  ##########  Logs: /var/log/rabbitmq/rabbit@klgaliyun03.log
+	  ######  ##        /var/log/rabbitmq/rabbit@klgaliyun03-sasl.log
+	  ##########
+	              Starting broker...
+	 completed with 6 plugins.
+
+
 ### demo
 
 #### producer
