@@ -49,9 +49,10 @@ so where is the max ? see the following
 [example][5]
 
 #### 可以限制发送速度？
-no way？ flow control
+no way？ [flow control][6]
 
 #### 如何做警报
+    [api][7]
     root@klgaliyun03:~# curl -i -u guest:guest http://localhost:15672/api/vhosts
     HTTP/1.1 200 OK
     vary: Accept-Encoding, origin
@@ -69,10 +70,10 @@ no way？ flow control
 不用rabbitmq 的话，log ==> 需要ELK 监控log，手动关闭某个节点或者关闭某些功能。
 
 ### 其他典型场景
-[see here][6]
+[see here][8]
 
 ### 其他用处
-[find bottle neck of your system][7]
+[find bottle neck of your system][9]
 
 ### Question
 如何需要req 有没有被处理？
@@ -89,10 +90,15 @@ rabbitmq-server 挂了怎么办？ -- HA
  - redelivered
  - acknowledge
 
+### npm package
+[原有的demo实例][10]结构不够好，每次都要create操作，使用以下的npm
+ [rabbitmq-pubsub][11]
  
 ### 更多参考
-[消息队列服务rabbitmq安装配置][8]
-[rabbitmq 集群高可用测试][9]
+[消息队列服务rabbitmq安装配置][12]
+[rabbitmq 集群高可用测试][13]
+[open-falcon][14] 
+[gitbook open-falcon][15]
 
 
   [1]: http://7xk67t.com1.z0.glb.clouddn.com/init.jpg
@@ -100,7 +106,13 @@ rabbitmq-server 挂了怎么办？ -- HA
   [3]: http://7xk67t.com1.z0.glb.clouddn.com/more2.jpg
   [4]: https://www.rabbitmq.com/configure.html
   [5]: https://github.com/rabbitmq/rabbitmq-server/blob/stable/docs/rabbitmq.config.example
-  [6]: https://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/
-  [7]: http://www.rabbitmq.com/blog/2014/04/14/finding-bottlenecks-with-rabbitmq-3-3/
-  [8]: http://www.ttlsa.com/linux/install-rabbitmq-on-linux/
-  [9]: http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html
+  [6]: https://www.rabbitmq.com/flow-control.html
+  [7]: http://localhost:15672/api/
+  [8]: https://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/
+  [9]: http://www.rabbitmq.com/blog/2014/04/14/finding-bottlenecks-with-rabbitmq-3-3/
+  [10]: https://www.rabbitmq.com/tutorials/tutorial-three-javascript.html
+  [11]: https://www.npmjs.com/package/rabbitmq-pubsub
+  [12]: http://www.ttlsa.com/linux/install-rabbitmq-on-linux/
+  [13]: http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html
+  [14]: http://open-falcon.org/
+  [15]: http://book.open-falcon.org/zh/intro/index.html
