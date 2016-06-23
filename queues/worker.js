@@ -7,7 +7,7 @@ amqp.connect('amqp://localhost', function(err, conn) {
     var q = 'task_queue';
 
     ch.assertQueue(q, {durable: true});
-    ch.prefetch(1);
+    ch.prefetch(1);//config :  not to give more than one message to a worker at a time
     console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q);
     ch.consume(q, function(msg) {
       var secs = msg.content.toString().split('.').length - 1;
@@ -16,7 +16,7 @@ amqp.connect('amqp://localhost', function(err, conn) {
       setTimeout(function() {
         console.log(" [x] Done");
         ch.ack(msg);
-      }, secs * 1000);
+      },  1000);
     }, {noAck: false});
   });
 });
