@@ -158,6 +158,23 @@ change timeout : worker wait 1 sec, task wait 10ms
 ![此处输入图片的描述][3]
 ### routing
 ![此处输入图片的描述][4]
+
+    klg@klgaliyun03:~/rabbitmq-demo/routing$ node ./receive_logs_direct.js warning error
+     [*] Waiting for logs. To exit press CTRL+C
+     [x] error: 'Run. Run. Or it will explode.'
+     [x] warning: 'warning: Run. Or it will explode.'
+     [x] warning: 'warning: Run. Or it will explode.'
+     [x] error: 'Run. Run. Or it will explode.'
+     
+     
+     klg@klgaliyun03:~/rabbitmq-demo/routing$ node ./emit_log_direct.js warning "warning: Run. Or it will explode."
+     [x] Sent warning: 'warning: Run. Or it will explode.'
+     
+     klg@klgaliyun03:~/rabbitmq-demo/routing$ node ./receive_logs_direct.js info
+     [*] Waiting for logs. To exit press CTRL+C
+     [x] info: 'Run. Run. Or it will explode.'
+     
+ 
 ### topic
 ![此处输入图片的描述][5]
 ### RPC
