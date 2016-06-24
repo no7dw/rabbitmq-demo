@@ -182,6 +182,6 @@ change timeout : worker wait 1 sec, task wait 10ms
 
   [1]: http://www.rabbitmq.com/img/tutorials/python-one.png
   [2]: http://www.rabbitmq.com/img/tutorials/python-two.png
-  [3]: %E6%AD%A4%E5%A4%84%E8%BE%93%E5%85%A5%E4%BB%A3%E7%A0%81
+  [3]: http://www.rabbitmq.com/img/tutorials/exchanges.png
   [4]: http://www.rabbitmq.com/img/tutorials/python-four.png
   [5]: http://www.rabbitmq.com/img/tutorials/python-five.png
