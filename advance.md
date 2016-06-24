@@ -82,6 +82,9 @@ no way？ [flow control][6]
 ### FAQ
 - 如何知道message有没有被consume？
 - 如何知道结果处理结果？
+[使用RPC模式][10]
+![此处输入图片的描述][11]
+
 - what if rabbitmq-server is killed ？ 
 message will be lost , util we set :
 
@@ -89,7 +92,7 @@ message will be lost , util we set :
     ch.sendToQueue(q, new Buffer(msg), {persistent: true});
 
 In the meanwile we better use HA solution.
-[Note that: this is not 100% guarantee message won't lost.][10]
+[Note that: this is not 100% guarantee message won't lost.][12]
 
 
 - what if consumer is killed, will the message lost? -- queue 在就行, set noAck:false
@@ -123,15 +126,15 @@ In the meanwile we better use HA solution.
  - acknowledge
 
 ### npm package
-[原有的demo实例][11]结构不够好，每次都要create操作，使用以下的npm
- [rabbitmq-pubsub][12]
+[原有的demo实例][13]结构不够好，每次都要create操作，使用以下的npm
+ [rabbitmq-pubsub][14]
  
 ### 更多参考
-[消息队列服务rabbitmq安装配置][13]
-[rabbitmq 集群高可用测试][14]
-[open-falcon][15] 
-[gitbook open-falcon][16]
-[rabbitmq & spring amqp][17]
+[消息队列服务rabbitmq安装配置][15]
+[rabbitmq 集群高可用测试][16]
+[open-falcon][17] 
+[gitbook open-falcon][18]
+[rabbitmq & spring amqp][19]
 
 
   [1]: http://7xk67t.com1.z0.glb.clouddn.com/init.jpg
@@ -143,11 +146,13 @@ In the meanwile we better use HA solution.
   [7]: http://localhost:15672/api/
   [8]: https://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/
   [9]: http://www.rabbitmq.com/blog/2014/04/14/finding-bottlenecks-with-rabbitmq-3-3/
-  [10]: http://www.rabbitmq.com/tutorials/tutorial-two-javascript.html
-  [11]: https://www.rabbitmq.com/tutorials/tutorial-three-javascript.html
-  [12]: https://www.npmjs.com/package/rabbitmq-pubsub
-  [13]: http://www.ttlsa.com/linux/install-rabbitmq-on-linux/
-  [14]: http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html
-  [15]: http://open-falcon.org/
-  [16]: http://book.open-falcon.org/zh/intro/index.html
-  [17]: http://wuaner.iteye.com/blog/1740566
+  [10]: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html
+  [11]: https://www.rabbitmq.com/img/tutorials/python-six.png
+  [12]: http://www.rabbitmq.com/tutorials/tutorial-two-javascript.html
+  [13]: https://www.rabbitmq.com/tutorials/tutorial-three-javascript.html
+  [14]: https://www.npmjs.com/package/rabbitmq-pubsub
+  [15]: http://www.ttlsa.com/linux/install-rabbitmq-on-linux/
+  [16]: http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html
+  [17]: http://open-falcon.org/
+  [18]: http://book.open-falcon.org/zh/intro/index.html
+  [19]: http://wuaner.iteye.com/blog/1740566
