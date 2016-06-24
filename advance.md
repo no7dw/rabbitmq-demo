@@ -83,6 +83,11 @@ no way？ [flow control][6]
 - 如何知道message有没有被consume？
 - 如何知道结果处理结果？
 [使用RPC模式][10]
+就是当普通http请求一样（有个msg ID）。server 会返回结果。结果存在reply_to 的queue (附上msgID)。 client 会去拿(根据msgID 知道对应上具体发送那个请求)。
+
+client 同时是rpc queue的producer & reply_queue 的consumer 
+server 同时是reply_queue的producer & rpc queue的consumer
+
 ![此处输入图片的描述][11]
 
 - what if rabbitmq-server is killed ？ 
