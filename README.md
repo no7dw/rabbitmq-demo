@@ -15,7 +15,8 @@
 	 completed with 6 plugins.
 
 
-### demo
+### basic hello world demo
+![此处输入图片的描述][1]
 
 #### producer
 
@@ -36,7 +37,7 @@
 	 [*] Waiting for messages in hello. To exit press CTRL+C
 	 [x] Received Hello World!
 
-#### list_queues again
+#### list_queues ag ain
 
 	klg@klgaliyun03:~/demo$ sudo rabbitmqctl list_queues
 	[sudo] password for klg: 
@@ -44,7 +45,8 @@
 	hello	0
 
 
-### demo2	
+### work queues demo2	
+![此处输入图片的描述][2]
 
 #### producer
 
@@ -91,7 +93,7 @@
 	Listing queues ...
 
 
-### demo3 
+### work queue demo3 
 change timeout : worker wait 1 sec, task wait 10ms
 
 
@@ -151,3 +153,18 @@ change timeout : worker wait 1 sec, task wait 10ms
 	Listing queues ...
 	hello	0
 	task_queue	1
+	
+### publish /subscribe
+![此处输入图片的描述][3]
+### routing
+![此处输入图片的描述][4]
+### topic
+![此处输入图片的描述][5]
+### RPC
+
+
+  [1]: http://www.rabbitmq.com/img/tutorials/python-one.png
+  [2]: http://www.rabbitmq.com/img/tutorials/python-two.png
+  [3]: %E6%AD%A4%E5%A4%84%E8%BE%93%E5%85%A5%E4%BB%A3%E7%A0%81
+  [4]: http://www.rabbitmq.com/img/tutorials/python-four.png
+  [5]: http://www.rabbitmq.com/img/tutorials/python-five.png

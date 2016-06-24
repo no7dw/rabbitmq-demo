@@ -4,11 +4,15 @@
 
 	rabbitmq-plugins enable rabbitmq_management
 
+
+----------
+
+
 visit : http://ali3:15672/
 管理页面的进程与rabbitmq-server 是分开的
 
 
-#### solve 401 
+#### solve management webpage 401 problem 
 
 	abbitmqctl add_user test test
 	rabbitmqctl set_user_tags test administrator
@@ -75,12 +79,40 @@ no way？ [flow control][6]
 ### 其他用处
 [find bottle neck of your system][9]
 
-### Question
-如何需要req 有没有被处理？
-如何知道结果处理结果？
-rabbitmq-server 挂了怎么办？ -- HA
+### FAQ
+- 如何知道message有没有被consume？
+- 如何知道结果处理结果？
+- what if rabbitmq-server is killed ？ 
+message will be lost , util we set :
 
-### TBD
+    ch.assertQueue('task_queue', {durable: true});
+    ch.sendToQueue(q, new Buffer(msg), {persistent: true});
+
+In the meanwile we better use HA solution.
+[Note that: this is not 100% guarantee message won't lost.][10]
+
+
+- what if consumer is killed, will the message lost? -- queue 在就行, set noAck:false
+
+> In order to make sure a message is never lost, RabbitMQ supports
+> message acknowledgments. An ack(nowledgement) is sent back from the
+> consumer to tell RabbitMQ that a particular message has been received,
+> processed and that RabbitMQ is free to delete it.
+> 
+> If a consumer dies (its channel is closed, connection is closed, or
+> TCP connection is lost) without sending an ack, RabbitMQ will
+> understand that a message wasn't processed fully and will re-queue it.
+> If there are other consumers online at the same time, it will then
+> quickly redeliver it to another consumer. That way you can be sure
+> that no message is lost, even if the workers occasionally die.
+
+- what if consumer took too long to handle the message?
+
+> There aren't any message timeouts; RabbitMQ will redeliver the message when the consumer dies. It's fine even if processing a message takes a very, very long time.
+
+
+
+### TBD 概念
  - vhost 
  - queue 
  - exchange
@@ -91,14 +123,15 @@ rabbitmq-server 挂了怎么办？ -- HA
  - acknowledge
 
 ### npm package
-[原有的demo实例][10]结构不够好，每次都要create操作，使用以下的npm
- [rabbitmq-pubsub][11]
+[原有的demo实例][11]结构不够好，每次都要create操作，使用以下的npm
+ [rabbitmq-pubsub][12]
  
 ### 更多参考
-[消息队列服务rabbitmq安装配置][12]
-[rabbitmq 集群高可用测试][13]
-[open-falcon][14] 
-[gitbook open-falcon][15]
+[消息队列服务rabbitmq安装配置][13]
+[rabbitmq 集群高可用测试][14]
+[open-falcon][15] 
+[gitbook open-falcon][16]
+[rabbitmq & spring amqp][17]
 
 
   [1]: http://7xk67t.com1.z0.glb.clouddn.com/init.jpg
@@ -110,9 +143,11 @@ rabbitmq-server 挂了怎么办？ -- HA
   [7]: http://localhost:15672/api/
   [8]: https://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/
   [9]: http://www.rabbitmq.com/blog/2014/04/14/finding-bottlenecks-with-rabbitmq-3-3/
-  [10]: https://www.rabbitmq.com/tutorials/tutorial-three-javascript.html
-  [11]: https://www.npmjs.com/package/rabbitmq-pubsub
-  [12]: http://www.ttlsa.com/linux/install-rabbitmq-on-linux/
-  [13]: http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html
-  [14]: http://open-falcon.org/
-  [15]: http://book.open-falcon.org/zh/intro/index.html
+  [10]: http://www.rabbitmq.com/tutorials/tutorial-two-javascript.html
+  [11]: https://www.rabbitmq.com/tutorials/tutorial-three-javascript.html
+  [12]: https://www.npmjs.com/package/rabbitmq-pubsub
+  [13]: http://www.ttlsa.com/linux/install-rabbitmq-on-linux/
+  [14]: http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html
+  [15]: http://open-falcon.org/
+  [16]: http://book.open-falcon.org/zh/intro/index.html
+  [17]: http://wuaner.iteye.com/blog/1740566
