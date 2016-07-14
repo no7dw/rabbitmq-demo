@@ -53,7 +53,10 @@ so where is the max ? see the following
 [example][5]
 
 #### 可以限制发送速度？
-no way？ [flow control][6]
+no way？ 
+无需配置，系统根据consumer 的处理速度，限制producer 的发送带宽，以限制producer发送的速度。
+[flow control][6]
+
 
 #### 如何做警报
     [api][7]
