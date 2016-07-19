@@ -10,6 +10,7 @@ function setup(queue, handler){
       console.log(' [x] Awaiting RPC requests');
       ch.consume(queue, function reply(req) {
         var fResult = handler(req);
+        console.log("compute complete");
         ch.sendToQueue(req.properties.replyTo,
           new Buffer(fResult.toString()),
           {correlationId: req.properties.correlationId});//sync send the result back to client

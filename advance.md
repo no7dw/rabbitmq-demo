@@ -2,7 +2,7 @@
 
 #### management install 
 
-	rabbitmq-plugins enable rabbitmq_management
+  rabbitmq-plugins enable rabbitmq_management
 
 
 ----------
@@ -14,9 +14,9 @@ visit : http://ali3:15672/
 
 #### solve management webpage 401 problem 
 
-	abbitmqctl add_user test test
-	rabbitmqctl set_user_tags test administrator
-	rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
+  abbitmqctl add_user test test
+  rabbitmqctl set_user_tags test administrator
+  rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
 
 after fresh install:
 ![fresh install][1]
@@ -28,20 +28,20 @@ with more data:
 ![此处输入图片的描述][3]
 
 ### unsolved why lost message?
-	klg@klgaliyun03:~/rabbitmq-demo/queues$ node worker.js 
-	 [*] Waiting for messages in task_queue. To exit press CTRL+C
-	 [x] Received 9
-	 [x] Done
-	 [x] Received 0
-	 [x] Done
-	 [x] Received 2
-	 [x] Done
-	 [x] Received 4
-	 [x] Done
-	 [x] Received 6
-	 [x] Done
-	 [x] Received 8
-	 [x] Done
+  klg@klgaliyun03:~/rabbitmq-demo/queues$ node worker.js 
+   [*] Waiting for messages in task_queue. To exit press CTRL+C
+   [x] Received 9
+   [x] Done
+   [x] Received 0
+   [x] Done
+   [x] Received 2
+   [x] Done
+   [x] Received 4
+   [x] Done
+   [x] Received 6
+   [x] Done
+   [x] Received 8
+   [x] Done
 
 ### you can send without consumers, but later consumers is up, while the message still can be received.
 so where is the max ? see the following
@@ -122,10 +122,51 @@ In the meanwile we better use HA solution.
 > There aren't any message timeouts; RabbitMQ will redeliver the message when the consumer dies. It's fine even if processing a message takes a very, very long time.
 
 
+### RPC problem:
+RPC 测试时，服务端有个消息处理卡住，就永远的卡住，
+如下图：
+![此处输入图片的描述][13]
+获取卡住的消息
+![此处输入图片的描述][14]
+可以
+  - delete queue
+how:
+
+    rabbitmqadmin -u {user} -p {password} -V {vhost} delete queue name={name}
+
+[example to delete queue][15]:
+
+    rabbitmqadmin  -u {user} -p {password} -V / delete queue name=rpc_queue  
+
+
+
+ - purge 清空 queue
+
+ http://localhost:15672/#/queues/%2F/rpc_queue
+
+ - move 改队列的所有消息 （推荐） （不能移除单个）
+
+ To move messages, the shovel plugin must be enabled, try:
+
+    $ rabbitmq-plugins enable rabbitmq_shovel rabbitmq_shovel_management
+
+![此处输入图片的描述][16]
+ 相当于有一个“垃圾”消息队列（填写上图destination queue），这些记录着你不能正常consume的,
+ 然后接下来一步相当重要：
+   - 修正server端不能consume 的原因
+   - 重启server端
+   - 将“垃圾”消息队列，重新移动会正常队列，进行消费
+
+
+ - comsume it [更优雅的方法][17]（推荐）
+
+更好的是跳过改消息with timeout，存储下来，如db，然后取下一个。
+然后review，让程序重新对这些结果进行consume。
+
+
 
 ### TBD 概念
  - vhost 
- - queue 
  - exchange
  - publish(in/out)
  - confirm
@@ -134,15 +175,16 @@ In the meanwile we better use HA solution.
  - acknowledge
 
 ### npm package
-[原有的demo实例][13]结构不够好，每次都要create操作，使用以下的npm
- [rabbitmq-pubsub][14]
+[原有的demo实例][18]结构不够好，每次都要create操作，使用以下的npm，或者[自行封装][19]
+ [node-amqp][20]
+ [amqp.node][21]
  
 ### 更多参考
-[消息队列服务rabbitmq安装配置][15]
-[rabbitmq 集群高可用测试][16]
-[open-falcon][17] 
-[gitbook open-falcon][18]
-[rabbitmq & spring amqp][19]
+[消息队列服务rabbitmq安装配置][22]
+[rabbitmq 集群高可用测试][23]
+[open-falcon][24] 
+[gitbook open-falcon][25]
+[rabbitmq & spring amqp][26]
 
 
   [1]: http://7xk67t.com1.z0.glb.clouddn.com/init.jpg
@@ -157,10 +199,17 @@ In the meanwile we better use HA solution.
   [10]: https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html
   [11]: https://www.rabbitmq.com/img/tutorials/python-six.png
   [12]: http://www.rabbitmq.com/tutorials/tutorial-two-javascript.html
-  [13]: https://www.rabbitmq.com/tutorials/tutorial-three-javascript.html
-  [14]: https://www.npmjs.com/package/rabbitmq-pubsub
-  [15]: http://www.ttlsa.com/linux/install-rabbitmq-on-linux/
-  [16]: http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html
-  [17]: http://open-falcon.org/
-  [18]: http://book.open-falcon.org/zh/intro/index.html
-  [19]: http://wuaner.iteye.com/blog/1740566
+  [13]: http://7xk67t.com1.z0.glb.clouddn.com/waiting.png
+  [14]: http://7xk67t.com1.z0.glb.clouddn.com/rabbitmq-get-msg.png
+  [15]: http://stackoverflow.com/questions/6742938/deleting-queues-in-rabbitmq
+  [16]: http://7xk67t.com1.z0.glb.clouddn.com/move-msg.png
+  [17]: https://www.quora.com/RabbitMQ-Is-it-possible-to-remove-a-message-after-it-is-queued
+  [18]: https://www.rabbitmq.com/tutorials/tutorial-three-javascript.html
+  [19]: https://github.com/no7dw/rabbitmq-demo/blob/master/rpc/rpc_server.js
+  [20]: https://github.com/postwait/node-amqp
+  [21]: https://github.com/squaremo/amqp.node
+  [22]: http://www.ttlsa.com/linux/install-rabbitmq-on-linux/
+  [23]: http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html
+  [24]: http://open-falcon.org/
+  [25]: http://book.open-falcon.org/zh/intro/index.html
+  [26]: http://wuaner.iteye.com/blog/1740566
