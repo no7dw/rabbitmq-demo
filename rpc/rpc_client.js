@@ -17,9 +17,9 @@ amqp.connect('amqp://localhost', function(err, conn) {
 
       console.log(' [x] Requesting fib(%d)', num);
 
-      ch.consume(q.queue, function(msg) {
-        if (msg.properties.correlationId == corr) {
-          console.log(' [.] Got %s', msg.content.toString());
+      ch.consume(q.queue, function(res) {
+        if (res.properties.correlationId == corr) {
+          console.log(' [.] Got %s', res.content.toString());
           setTimeout(function() { conn.close(); process.exit(0) }, 500);
         }
       }, {noAck: true});
