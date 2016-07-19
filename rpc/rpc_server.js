@@ -2,6 +2,14 @@
 
 var amqp = require('amqplib/callback_api');
 
+
+function fibonacci(n) {
+  if (n == 0 || n == 1)
+    return n;
+  else
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
 function setup(queue, handler){
   amqp.connect('amqp://localhost', function(err, conn) {
     conn.createChannel(function(err, ch) {
@@ -25,13 +33,6 @@ function worker(req){
   var n = parseInt(req.content.toString());
   console.log(" [.] fib(%d)", n);
   return fibonacci(n);
-}
-
-function fibonacci(n) {
-  if (n == 0 || n == 1)
-    return n;
-  else
-    return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
 var q = 'rpc_queue';
