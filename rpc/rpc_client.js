@@ -15,7 +15,7 @@ function sender( msg , resHandler){
         var corr = generateUuid();
         console.log(' [x] Requesting fib(%d)', msg);
         ch.consume(cbQueue.queue, function(res){
-         responseHandler(res, corr);
+         responseHandler(res, corr , conn);
          }, {noAck: true});//async
         ch.sendToQueue('rpc_queue',
           new Buffer(msg.toString()),
@@ -26,7 +26,7 @@ function sender( msg , resHandler){
 
 };
 
-function responseHandler(res, corr){
+function responseHandler(res, corr, conn){
   if (res.properties.correlationId == corr) {
     console.log(' [.] Got %s', res.content.toString());
     setTimeout(function() { conn.close(); process.exit(0) }, 500);
