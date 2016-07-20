@@ -165,9 +165,20 @@ how:
 
 
 
-### TBD 概念
- - vhost 
- - exchange
+### [概念][18]
+ - Producer: Application that sends the messages.
+ - Consumer: Application that receives the messages.
+ - Queue: Buffer that stores messages.
+ - Message: Information that is sent from the producer to a consumer through RabbitMQ.
+ - Connection: A connection is a TCP connection between your application and the RabbitMQ broker.
+ - Channel: A channel is a virtual connection inside a connection. When you are  - publishing or consuming messages or subscribing to a queue is it all done over a channel.
+ - Exchange: Receives messages from producers and pushes them to queues depending on rules defined by the exchange type. In order to receive messages, a queue needs to be bound to at least one exchange.
+ - Binding: A binding is a link between a queue and an exchange.
+ - Routing key: The routing key is a key that the exchange looks at to decide how to route the message to queues. The routing key is like an address for the message.
+ - AMQP: AMQP (Advanced Message Queuing Protocol) is the protocol used by RabbitMQ for messaging.
+ - Users: It is possible to connect to RabbitMQ with a given username and password. Every user can be assigned permissions such as rights to read, write and configure privileges within the instance. Users can also be assigned permissions to specific virtual hosts.
+ - Vhost, virtual host: A Virtual host provide a way to segregate applications using the same RabbitMQ instance. Different users can have different access privileges to different vhost and queues and exchanges can be created so they only exists in one vhost.
+
  - publish(in/out)
  - confirm
  - deliver
@@ -175,16 +186,25 @@ how:
  - acknowledge
 
 ### npm package
-[原有的demo实例][18]结构不够好，每次都要create操作，使用以下的npm，或者[自行封装][19]
- [node-amqp][20]
- [amqp.node][21]
+[原有的demo实例][19]结构不够好，每次都要create操作，使用以下的npm，或者[自行封装][20]
+ [node-amqp][21]
+ [amqp.node][22]
+ 
+ 官方提供的例子没有按照promise and generator 方式编写。稍微封装改写了一下：
+ [generator][23]
+ [promise][24]
+ 
+### 上面的generator 例子碰到的坑
+  本来想将官方的例子进行封装：尝试两次发送消息都共用同一connection, channel, callback queue。结果返回的消息里面uuid 都是同一个uuid。
+  所以暂时需要每次发送前，都要初始化一次。
+  参加[别人同样遇到][25]这个问题。
  
 ### 更多参考
-[消息队列服务rabbitmq安装配置][22]
-[rabbitmq 集群高可用测试][23]
-[open-falcon][24] 
-[gitbook open-falcon][25]
-[rabbitmq & spring amqp][26]
+[消息队列服务rabbitmq安装配置][26]
+[rabbitmq 集群高可用测试][27]
+[open-falcon][28] 
+[gitbook open-falcon][29]
+[rabbitmq & spring amqp][30]
 
 
   [1]: http://7xk67t.com1.z0.glb.clouddn.com/init.jpg
@@ -204,12 +224,16 @@ how:
   [15]: http://stackoverflow.com/questions/6742938/deleting-queues-in-rabbitmq
   [16]: http://7xk67t.com1.z0.glb.clouddn.com/move-msg.png
   [17]: https://www.quora.com/RabbitMQ-Is-it-possible-to-remove-a-message-after-it-is-queued
-  [18]: https://www.rabbitmq.com/tutorials/tutorial-three-javascript.html
-  [19]: https://github.com/no7dw/rabbitmq-demo/blob/master/rpc/rpc_server.js
-  [20]: https://github.com/postwait/node-amqp
-  [21]: https://github.com/squaremo/amqp.node
-  [22]: http://www.ttlsa.com/linux/install-rabbitmq-on-linux/
-  [23]: http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html
-  [24]: http://open-falcon.org/
-  [25]: http://book.open-falcon.org/zh/intro/index.html
-  [26]: http://wuaner.iteye.com/blog/1740566
+  [18]: https://www.cloudamqp.com/blog/2015-05-18-part1-rabbitmq-for-beginners-what-is-rabbitmq.html
+  [19]: https://www.rabbitmq.com/tutorials/tutorial-three-javascript.html
+  [20]: https://github.com/no7dw/rabbitmq-demo/blob/master/rpc/rpc_server.js
+  [21]: https://github.com/postwait/node-amqp
+  [22]: https://github.com/squaremo/amqp.node
+  [23]: https://github.com/no7dw/rabbitmq-demo/blob/master/rpc/rpc_client_gen.js
+  [24]: https://github.com/no7dw/rabbitmq-demo/blob/master/rpc/rpc_client_promise.js
+  [25]: http://stackoverflow.com/questions/34406347/rabbitmq-rpc-implementation-share-the-same-reply-queue/38484316#38484316
+  [26]: http://www.ttlsa.com/linux/install-rabbitmq-on-linux/
+  [27]: http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html
+  [28]: http://open-falcon.org/
+  [29]: http://book.open-falcon.org/zh/intro/index.html
+  [30]: http://wuaner.iteye.com/blog/1740566

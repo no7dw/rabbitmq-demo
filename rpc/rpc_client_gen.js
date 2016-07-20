@@ -17,18 +17,25 @@ function generateUuid() {
         Math.random().toString()
 }
 
-function* sender(msg, resHandler) {
+function* init(){
+    let conn = yield amqp
+    let ch = yield conn.createChannel()
+    let cbQueue = yield ch.assertQueue('', {exclusive: true})
+    return {"conn": conn, "channel": ch, "cbQueue": cbQueue}
+}
+
+function* sender(initConfig, msg, resHandler) {
     try {
-        let conn = yield amqp
-        let ch = yield conn.createChannel()
-        let cbQueue = yield ch.assertQueue('', {exclusive: true})
+        let ch = initConfig.channel
+        let conn = initConfig.conn
+        let cbQueue = initConfig.cbQueue
+
         const corr = generateUuid()
-        console.log(' [x] Requesting fib(%d)', msg)
+        console.log(' [x] [%s] Requesting fib(%d)',corr, msg)
         ch.consume(cbQueue.queue, (resultMsg) => {
             resHandler(resultMsg, corr, conn)
         })
         ch.sendToQueue('rpc_queue', new Buffer(msg.toString()), {"correlationId": corr, "replyTo": cbQueue.queue})
-        //return conn
     }
     catch (ex) {
         console.warn("ex:", ex)
@@ -36,12 +43,14 @@ function* sender(msg, resHandler) {
 }
 
 function responseHandler(res, corr, conn) {
-    if (res.properties.correlationId == corr) {
+    console.log("corr: %s - %s", corr, res.content.toString());
+    if (res.properties.correlationId == corr)
+    {
         console.log(' [.] Got %s', res.content.toString());
         setTimeout(  () =>  {
             conn.close()
             process.exit(0)
-        }, 500);
+        }, 2000);
     }
 };
 
@@ -51,7 +60,11 @@ function onerror(err) {
 
 co(function*() {
     let num = parseInt(args[0])
-    yield sender(num.toString(), responseHandler)
-}).then({
-    //should close and exit here
+    let initConfig = yield init();
+    let initConfig2 = yield init();
+    yield [
+        sender(initConfig, num.toString(), responseHandler),
+        sender(initConfig2, (num+3).toString(), responseHandler)
+    ]
+
 }, onerror)
