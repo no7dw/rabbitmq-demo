@@ -41,7 +41,8 @@ function* sender(initConfig, msg, resHandler) {
         console.warn("ex:", ex)
     }
 }
-
+//客户端最好需要对消息防止重复处理,超时没有返回结果的要进行超时处理
+//服务端:先存储到db, 然后当做消费他.后续补充这些异常消息的处理
 function responseHandler(res, corr, conn) {
     console.log("corr: %s - %s", corr, res.content.toString());
     if (res.properties.correlationId == corr)
