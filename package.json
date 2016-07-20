@@ -4,11 +4,12 @@
   "description": "### demo",
   "main": "receive.js",
   "dependencies": {
-    "amqplib": "^0.4.2"
+    "amqplib": "^0.4.2",
+    "co": "^4.6.0"
   },
   "devDependencies": {
-    "amqplib":"latest"
-    },
+    "amqplib": "latest"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
