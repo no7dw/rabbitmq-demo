@@ -31,7 +31,7 @@ function* sender(initConfig, msg, resHandler) {
         let cbQueue = initConfig.cbQueue
 
         const corr = generateUuid()
-        console.log(' [x] [%s] Requesting fib(%d)',corr, msg)
+        console.log(' [x] [%s] Requesting fib(%s)',corr, msg)
         ch.consume(cbQueue.queue, (resultMsg) => {
             resHandler(resultMsg, corr, conn)
         })
@@ -50,11 +50,17 @@ function responseHandler(res, corr, conn) {
         console.log(' [.] Got %s', res.content.toString());
         setTimeout(  () =>  {
             conn.close()
-            // process.exit(0)
         }, 500);
     }
     return res.content.toString()
 };
+
+
+
+exports.send = function * (msg, responseHandler) {
+  let initConfig = yield init();
+  yield sender(initConfig, msg, responseHandler );
+}
 
 // function onerror(err) {
 //     console.error(err.stack);
@@ -63,14 +69,7 @@ function responseHandler(res, corr, conn) {
 // co(function*() {
 //     let num = parseInt(args[0])
 //     let initConfig = yield init();
-//     let initConfig2 = yield init();
 //     yield [
 //         sender(initConfig, num.toString(), responseHandler),
-//         sender(initConfig2, (num+3).toString(), responseHandler)
 //     ]
 // }, onerror)
-
-exports.send = function * (msg, responseHandler) {
-  let initConfig = yield init();
-  sender(initConfig, msg, responseHandler );
-}

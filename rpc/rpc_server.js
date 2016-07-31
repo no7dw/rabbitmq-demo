@@ -3,12 +3,12 @@
 var amqp = require('amqplib/callback_api');
 
 
-function fibonacci(n) {
-  if (n == 0 || n == 1)
-    return n;
-  else
-    return fibonacci(n - 1) + fibonacci(n - 2);
-}
+// function fibonacci(n) {
+//   if (n == 0 || n == 1)
+//     return n;
+//   else
+//     return fibonacci(n - 1) + fibonacci(n - 2);
+// }
 
 function setup(queue, handler){
   amqp.connect('amqp://localhost', function(err, conn) {
@@ -30,9 +30,20 @@ function setup(queue, handler){
 
 //do work
 function worker(req){
-  var n = parseInt(req.content.toString());
-  console.log(" [.] fib(%d)", n);
-  return fibonacci(n);
+  var msg = req.content.toString();
+  console.log("receive:", msg);
+  var userLevel = {}
+  try{
+    userLevel = JSON.parse(msg)  
+  }
+  catch(e)
+  {
+    console.error('pass error')
+    return -1;
+  }
+  console.log(" [.] userLevel ", userLevel);
+  return userLevel.level += 1;
+  // return fibonacci(n);
 }
 
 var q = 'rpc_queue';
