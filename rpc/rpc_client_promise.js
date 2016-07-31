@@ -1,14 +1,7 @@
-#!/usr/bin/env node
 'use strict'
 
-var amqp = require('amqplib').connect('amqp://user:password@ali3')
-
-var args = process.argv.slice(2)
-
-if (args.length == 0) {
-  console.log("Usage: rpc_client.js num");
-  process.exit(1)
-}
+const config = require('./config')
+const amqp = require('amqplib').connect('amqp://' + config.username + ':' + config.password + '@' + config.host)
 
 function generateUuid() {
   return Math.random().toString() +
@@ -36,5 +29,7 @@ function responseHandler(res, corr, conn){
   }
 };
 
-var num = parseInt(args[0])
-sender(num.toString(), responseHandler)
+// var num = parseInt(args[0])
+// sender(num.toString(), responseHandler)
+
+

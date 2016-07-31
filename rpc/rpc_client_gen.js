@@ -4,12 +4,12 @@ const config = require('./config')
 const amqp = require('amqplib').connect('amqp://' + config.username + ':' + config.password + '@ali3')
 const co = require('co')
 
-const args = process.argv.slice(2)
+// const args = process.argv.slice(2)
 
-if (args.length == 0) {
-    console.log("Usage: rpc_client.js num");
-    process.exit(1)
-}
+// if (args.length == 0) {
+//     console.log("Usage: rpc_client.js num");
+//     process.exit(1)
+// }
 
 function generateUuid() {
     return Math.random().toString() +
@@ -50,22 +50,27 @@ function responseHandler(res, corr, conn) {
         console.log(' [.] Got %s', res.content.toString());
         setTimeout(  () =>  {
             conn.close()
-            process.exit(0)
-        }, 2000);
+            // process.exit(0)
+        }, 500);
     }
+    return res.content.toString()
 };
 
-function onerror(err) {
-    console.error(err.stack);
+// function onerror(err) {
+//     console.error(err.stack);
+// }
+
+// co(function*() {
+//     let num = parseInt(args[0])
+//     let initConfig = yield init();
+//     let initConfig2 = yield init();
+//     yield [
+//         sender(initConfig, num.toString(), responseHandler),
+//         sender(initConfig2, (num+3).toString(), responseHandler)
+//     ]
+// }, onerror)
+
+exports.send = function * (msg, responseHandler) {
+  let initConfig = yield init();
+  sender(initConfig, msg, responseHandler );
 }
-
-co(function*() {
-    let num = parseInt(args[0])
-    let initConfig = yield init();
-    let initConfig2 = yield init();
-    yield [
-        sender(initConfig, num.toString(), responseHandler),
-        sender(initConfig2, (num+3).toString(), responseHandler)
-    ]
-
-}, onerror)

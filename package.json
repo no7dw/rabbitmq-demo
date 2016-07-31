@@ -8,10 +8,11 @@
     "co": "^4.6.0"
   },
   "devDependencies": {
-    "amqplib": "latest"
+    "co-mocha": "^1.1.2",
+    "should": "^8.0.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha -t 5s -r should -r co-mocha ./test/**/*.test.js"
   },
   "repository": {
     "type": "git",
