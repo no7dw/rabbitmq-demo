@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var amqp = require('amqplib/callback_api');
-
+var currentLevel = 0
 
 // function fibonacci(n) {
 //   if (n == 0 || n == 1)
@@ -18,9 +18,9 @@ function setup(queue, handler){
       console.log(' [x] Awaiting RPC requests');
       ch.consume(queue, function reply(req) {
         var fResult = handler(req);
-        console.log("compute complete");
+        console.log("handle complete, send result to client", fResult);
         ch.sendToQueue(req.properties.replyTo,
-          new Buffer(fResult.toString()),
+          new Buffer( JSON.stringify( fResult) ),
           {correlationId: req.properties.correlationId});//sync send the result back to client
         ch.ack(req);
       });
@@ -34,20 +34,19 @@ function worker(req){
   console.log("receive:", msg);
   var userLevel = {}
   try{
-    userLevel = JSON.parse(msg)  
+    userLevel = JSON.parse(msg)
+    currentLevel += 1
+    userLevel.level = currentLevel
   }
   catch(e)
   {
     console.error('pass error')
     return -1;
   }
-  console.log(" [.] userLevel ", userLevel);
-  return userLevel.level += 1;
-  // return fibonacci(n);
+  console.log(" [.] user current Level ", currentLevel);
+  return userLevel
 }
 
-var q = 'rpc_queue';
-setup(q, worker);
-console.log('rpc server started ...');
-
-
+var q = 'rpc_queue'
+setup(q, worker)
+console.log('rpc server started ...')

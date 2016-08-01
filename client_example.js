@@ -11,7 +11,8 @@ function onerror(err) {
 co(function*() {
     
     yield rpc_client.send( msg, (result) =>{
-      console.log(result.content.toString());
+      const jsonResult = JSON.parse(result.content) ;
+      console.log("server return result:", jsonResult);
       process.exit(0)
     });
 }, onerror)
