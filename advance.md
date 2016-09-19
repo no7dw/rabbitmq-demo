@@ -28,20 +28,21 @@ with more data:
 ![此处输入图片的描述][3]
 
 ### unsolved why lost message?
-  klg@klgaliyun03:~/rabbitmq-demo/queues$ node worker.js 
-   [*] Waiting for messages in task_queue. To exit press CTRL+C
-   [x] Received 9
-   [x] Done
-   [x] Received 0
-   [x] Done
-   [x] Received 2
-   [x] Done
-   [x] Received 4
-   [x] Done
-   [x] Received 6
-   [x] Done
-   [x] Received 8
-   [x] Done
+
+    klg@klgaliyun03:~/rabbitmq-demo/queues$ node worker.js 
+     [*] Waiting for messages in task_queue. To exit press CTRL+C
+     [x] Received 9
+     [x] Done
+     [x] Received 0
+     [x] Done
+     [x] Received 2
+     [x] Done
+     [x] Received 4
+     [x] Done
+     [x] Received 6
+     [x] Done
+     [x] Received 8
+     [x] Done
 
 ### you can send without consumers, but later consumers is up, while the message still can be received.
 so where is the max ? see the following
