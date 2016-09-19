@@ -207,16 +207,17 @@ how:
 ### 高可用
   
   为保证mq节点挂掉，系统要正常运转，需要做高可用处理，比较合适的是采用mirror模式，简单地通过haproxy 来进行转发。
-[高可用配置](http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html)
-[高可用配置 mirror mode](http://88250.b3log.org/rabbitmq-clustering-ha)
+  - [高可用配置](http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html)
+  - [高可用配置 mirror mode](http://88250.b3log.org/rabbitmq-clustering-ha)
 
 ### 更多参考
-[消息队列服务rabbitmq安装配置][26]
-[rabbitmq 集群高可用测试][27]
-[open-falcon][28] 
-[gitbook open-falcon][29]
-[rabbitmq & spring amqp][30]
-[可靠的消息系统][31]
+
+  - [消息队列服务rabbitmq安装配置][26]
+  - [rabbitmq 集群高可用测试][27]
+  - [open-falcon][28] 
+  - [gitbook open-falcon][29]
+  - [rabbitmq & spring amqp][30]
+  - [可靠的消息系统][31]
 
 
 
