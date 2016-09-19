@@ -5,7 +5,8 @@
   "main": "receive.js",
   "dependencies": {
     "amqplib": "^0.4.2",
-    "co": "^4.6.0"
+    "co": "^4.6.0",
+    "uuid": "^2.0.3"
   },
   "devDependencies": {
     "co-mocha": "^1.1.2",

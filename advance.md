@@ -188,12 +188,14 @@ how:
 
 ### npm package
 [原有的demo实例][19]结构不够好，每次都要create操作，使用以下的npm，或者[自行封装][20]
- [node-amqp][21]
- [amqp.node][22]
+ - [node-amqp][21]
+ - [amqp.node][22]
+ - [coworkers](https://github.com/tjmehta/coworkers)
+ - [amqplib-rpc](https://github.com/tjmehta/amqplib-rpc)
  
  官方提供的例子没有按照promise and generator 方式编写。稍微封装改写了一下：
- [generator][23]
- [promise][24]
+ - [generator][23]
+ - [promise][24]
  
 ### 上面的generator 例子碰到的坑
   本来想将官方的例子进行封装：尝试两次发送消息都共用同一connection, channel, callback queue。结果返回的消息里面uuid 都是同一个uuid。
@@ -207,8 +209,8 @@ how:
 ### 高可用
   
   为保证mq节点挂掉，系统要正常运转，需要做高可用处理，比较合适的是采用mirror模式，简单地通过haproxy 来进行转发。
-  - [高可用配置](http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html)
-  - [高可用配置 mirror mode](http://88250.b3log.org/rabbitmq-clustering-ha)
+ - [高可用配置](http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html)
+ - [高可用配置 mirror mode](http://88250.b3log.org/rabbitmq-clustering-ha)
 
 ### 更多参考
 

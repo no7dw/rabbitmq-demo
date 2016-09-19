@@ -3,6 +3,7 @@
 const config = require('./config')
 const amqp = require('amqplib').connect('amqp://' + config.username + ':' + config.password + '@ali3')
 const co = require('co')
+const uuid = require('uuid');
 
 // const args = process.argv.slice(2)
 
@@ -10,12 +11,6 @@ const co = require('co')
 //     console.log("Usage: rpc_client.js num");
 //     process.exit(1)
 // }
-
-function generateUuid() {
-    return Math.random().toString() +
-        Math.random().toString() +
-        Math.random().toString()
-}
 
 function* init(){
     let conn = yield amqp
@@ -30,7 +25,7 @@ function* sender(initConfig, msg, resHandler) {
         let conn = initConfig.conn
         let cbQueue = initConfig.cbQueue
 
-        const corr = generateUuid()
+        const corr = uuid.v4()
         console.log(' [x] [%s] Requesting fib(%s)',corr, msg)
         ch.consume(cbQueue.queue, (resultMsg) => {
             resHandler(resultMsg, corr, conn)
