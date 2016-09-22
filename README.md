@@ -178,7 +178,7 @@ change timeout : worker wait 1 sec, task wait 10ms
 ### topic
 ![此处输入图片的描述][5]
 ### RPC
-
+[check this advance part](https://github.com/no7dw/rabbitmq-demo/blob/master/advance.md#faq)
 
   [1]: http://www.rabbitmq.com/img/tutorials/python-one.png
   [2]: http://www.rabbitmq.com/img/tutorials/python-two.png
