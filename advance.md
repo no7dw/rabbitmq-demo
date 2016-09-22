@@ -203,6 +203,25 @@ how:
   可能猜测：amqp 是基于tcp 的，如果不同客户端的去往服务端发消息，理论上是不可以用同一个tcp connection。
   但如果是同一个客户端不停的发消息，tcp 不close，就一直可以发信息了。
 
+  测试：
+
+    `
+    //run twice
+    ch.sendToQueue(q, new Buffer(msg), {persistent: true});
+    ch.sendToQueue(q, new Buffer(msg), {persistent: true});
+    `
+  
+    klg@klgaliyun03:~/rabbitmq-demo/queues$ node task-client.js
+    [x] Sent 'Hello World!'
+
+    //can receive two message
+    klg@klgaliyun03:~/rabbitmq-demo/queues$ node worker-server.js
+     [*] Waiting for messages in task_queue. To exit press CTRL+C
+     [x] Received Hello World!
+     [x] Done
+     [x] Received Hello World!
+     [x] Done
+
   参考[别人同样遇到][25]这个问题。
 ### more advance  
 [RabbitMQ说明](https://github.com/sky-big/RabbitMQ/)
