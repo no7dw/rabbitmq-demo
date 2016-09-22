@@ -203,6 +203,7 @@ how:
   参加[别人同样遇到][25]这个问题。
 ### more advance  
 [RabbitMQ说明](https://github.com/sky-big/RabbitMQ/)
+[taobao info rabbitmq](https://github.com/sky-big/RabbitMQ/tree/master/%E6%B7%98%E5%AE%9DRabbitMQ%E5%AE%9E%E9%AA%8C%E8%B5%84%E6%96%99)
 ### 一致性保证
   为了完成用户的一个请求，后台通常对应多个远程调用，后台如何保证事务的一致性成为了难题。以转账为例,A给B转账，两人原账户各有1000，数据版本号为a1,b1两个步骤为从A扣除100，给B增加100，假如A扣除这步成功了，但给B增加这个步骤超时了呢？给B到底增加了没有？
 
