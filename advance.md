@@ -192,7 +192,7 @@ how:
  - [amqp.node][22]
  - [coworkers](https://github.com/tjmehta/coworkers)
  - [amqplib-rpc](https://github.com/tjmehta/amqplib-rpc)
- 
+
  官方提供的例子没有按照promise and generator 方式编写。稍微封装改写了一下：
  - [generator][23]
  - [promise][24]
@@ -203,8 +203,17 @@ how:
   参加[别人同样遇到][25]这个问题。
  
 ### 一致性保证
-  为了完成用户的一个请求，后台通常对应多个远程调用，后台如何保证事务的一致性成为了难题。以转账为例,A给B转账，两人原账户各有1000，数据版本号为a1,b1两个步骤为从A扣除100，给B增加100，假如A扣除这步成功了，但给B增加这个步骤超时了呢？给B到底增加了没有？在操作前给这个步骤分配唯一编号 Tid，A(a1)减100 ,然后写日志(Tid, s1,a1, -100,a2)。如果日志写失败了呢？因为数据是有版本号的，重试不会减两次。同理操作B(b1)增加100,然后写日志(Tid, s2,b1, +100,b2）。如果操作B过程超时了，也重试。有了操作日志，可以灵活的选择回滚还是重试，重试的时机是立即还是延后。在消息系统里，每条消息也被分配了唯一ID，确保操作的可追溯可重试。
+  为了完成用户的一个请求，后台通常对应多个远程调用，后台如何保证事务的一致性成为了难题。以转账为例,A给B转账，两人原账户各有1000，数据版本号为a1,b1两个步骤为从A扣除100，给B增加100，假如A扣除这步成功了，但给B增加这个步骤超时了呢？给B到底增加了没有？
 
+  在操作前给这个步骤分配唯一编号 Tid，A(a1)减100 ,然后写日志(Tid, s1,a1, -100,a2)。
+  
+  同理操作B(b1)增加100,然后写日志(Tid, s2,b1, +100,b2）。
+
+  Q:
+ - 如果日志写失败了呢？因为数据是有版本号的，重试不会减两次。
+ - 如果操作B过程超时了，也重试。有了操作日志，可以灵活的选择回滚还是重试，重试的时机是立即还是延后。在消息系统里，每条消息也被分配了唯一ID，确保操作的可追溯可重试。
+
+[ref:使用RabbitMQ的事件驱动微服务](https://mp.weixin.qq.com/s?__biz=MzA5OTAyNzQ2OA==&mid=2649691705&idx=1&sn=f6ab0795d5eef8202b8a7277e9632009&chksm=8893295abfe4a04c32ec4599a0afddfad1e3300e2b8fa029e8df083d90c847e68a0cd8f5e716&scene=1&srcid=0922Wghg1M0sLDWZYUoWuF1y&key=1a6dc58b177dc6268ad892cc8c35acf4e050d519205d7ffa81bda3af2c217e97aad2b7b9f479c48acbee5f6f0f850383&ascene=0&uin=MjQ2NTA3MzgwMg%3D%3D&devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.11.6+build(15G1004)&version=11020201&pass_ticket=PJGkgI0NQsaen6M0WEF6NjT0CNcnSUFyH2xuxAHMRLeKU4jMX8CbpKrOQ%2FKDlTsz)
 
 ### 高可用
   
