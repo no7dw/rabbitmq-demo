@@ -1,9 +1,11 @@
 'use strict';
 
-const config = require('./config')
+const config = require('../config.dev')
 const amqp = require('amqplib').connect('amqp://' + config.username + ':' + config.password + '@ali3')
 const co = require('co')
 const uuid = require('uuid');
+
+//TODO : wrap it as a class
 
 // const args = process.argv.slice(2)
 

@@ -58,7 +58,6 @@ no way？
 无需配置，系统根据consumer 的处理速度，限制producer 的发送带宽，以限制producer发送的速度。
 [flow control][6]
 
-
 #### 如何做警报
     [api][7]
     root@klgaliyun03:~# curl -i -u guest:guest http://localhost:15672/api/vhosts
@@ -79,6 +78,9 @@ no way？
 
 ### 其他典型场景
 [see here][8]
+
+### 轮询改进
+  queue 模型时，当两个comsumer时，default 轮询方式是round-robin, 为了避免一个忙，另外一个闲的情况出现， 可以设置prefetch 来避免这个问题
 
 ### 其他用处
 [find bottle neck of your system][9]

@@ -1,6 +1,6 @@
 'use strict'
 
-const config = require('./config')
+const config = require('../config.dev')
 const amqp = require('amqplib').connect('amqp://' + config.username + ':' + config.password + '@' + config.host)
 
 function generateUuid() {
