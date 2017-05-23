@@ -166,6 +166,11 @@ how:
 更好的是跳过改消息with timeout，存储下来，如db，然后取下一个。
 然后review，让程序重新对这些结果进行consume。
 
+针对这种超时的处理，可以参考这个link：
+https://www.rabbitmq.com/dlx.html
+https://www.rabbitmq.com/ttl.html
+https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-performance-improvements
+
 
 
 ### [概念][18]
