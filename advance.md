@@ -60,7 +60,16 @@ no way？
 
 ### 提高consumer吞吐
   尝试oneway，例如log 收集日记，如果不需要高可靠性，用最basic的模式：只send ，不care 返回
-  P -> Q  -> C
+  ![img](https://camo.githubusercontent.com/d61929e2c351b097e5a3b1137354327069734a43/687474703a2f2f7777772e7261626269746d712e636f6d2f696d672f7475746f7269616c732f707974686f6e2d6f6e652e706e67)
+
+### 注意事项
+ - consumer端必定要注意消息重复的问题，要做成**幂等**。
+ - 场景 步骤典型选择
+错：
+ ![img](http://oqln5pzeb.bkt.clouddn.com/17-10-10/84174773.jpg)
+对： 
+ ![img](http://oqln5pzeb.bkt.clouddn.com/17-10-10/68585214.jpg)
+
 
 #### 如何做警报
     [api][7]
@@ -201,12 +210,14 @@ https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-perform
  - [amqp.node][22]
  - [coworkers](https://github.com/tjmehta/coworkers)
  - [amqplib-rpc](https://github.com/tjmehta/amqplib-rpc)
+ - [servicebus](https://www.npmjs.com/package/servicebus)
+ - [servicebus-retry](https://www.npmjs.com/package/servicebus-retry)
 
  官方提供的例子没有按照promise and generator 方式编写。稍微封装改写了一下：
  - [generator][23]
  - [promise][24]
  
-### 上面的generator 例子碰到的坑
+### 碰到的坑
   本来想将官方的例子进行封装：尝试两次发送消息都共用同一connection, channel, callback queue。结果返回的消息里面uuid 都是同一个uuid。
   所以暂时需要每次发送前，都要初始化一次。
   可能猜测：amqp 是基于tcp 的，如果不同客户端的去往服务端发消息，理论上是不可以用同一个tcp connection。
@@ -263,9 +274,11 @@ https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-perform
 拆解系统过程中，如果不选mq来替代http rest ，还有选择吗？
    
    调用rest场景：
+   - sync 改成 async 回调 (注意重试，重试注意 exponential backoff ，否则造成累计波峰)
    - thrift RPC
    - Raw TCP/UDP
    - Redis pub/sub
+   - Retry http
 
 
 
