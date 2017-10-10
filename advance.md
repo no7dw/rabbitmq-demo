@@ -58,6 +58,10 @@ no way？
 无需配置，系统根据consumer 的处理速度，限制producer 的发送带宽，以限制producer发送的速度。
 [flow control][6]
 
+### 提高consumer吞吐
+  尝试oneway，例如log 收集日记，如果不需要高可靠性，用最basic的模式：只send ，不care 返回
+  P -> Q  -> C
+
 #### 如何做警报
     [api][7]
     root@klgaliyun03:~# curl -i -u guest:guest http://localhost:15672/api/vhosts
@@ -73,8 +77,6 @@ no way？
 
 **send_oct_details**
 
-### not using rabbitmq
-不用rabbitmq 的话，log ==> 需要ELK 监控log，手动关闭某个节点或者关闭某些功能。
 
 ### 其他典型场景
 [see here][8]
@@ -230,6 +232,9 @@ https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-perform
      [x] Done
 
   参考[别人同样遇到][25]这个问题。
+
+
+
 ### more advance  
  - [RabbitMQ说明](https://github.com/sky-big/RabbitMQ/)
  - [taobao info rabbitmq](https://github.com/sky-big/RabbitMQ/tree/master/%E6%B7%98%E5%AE%9DRabbitMQ%E5%AE%9E%E9%AA%8C%E8%B5%84%E6%96%99)
@@ -251,6 +256,18 @@ https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-perform
   为保证mq节点挂掉，系统要正常运转，需要做高可用处理，比较合适的是采用mirror模式，简单地通过haproxy 来进行转发。
  - [高可用配置](http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html)
  - [高可用配置 mirror mode](http://88250.b3log.org/rabbitmq-clustering-ha)
+
+
+
+### 如果不选mq？
+拆解系统过程中，如果不选mq来替代http rest ，还有选择吗？
+   
+   调用rest场景：
+   - thrift RPC
+   - Raw TCP/UDP
+   - Redis pub/sub
+
+
 
 ### 更多参考
 
