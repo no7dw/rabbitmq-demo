@@ -99,11 +99,17 @@ no way？
 ### FAQ
 - 如何知道message有没有被consume？
 - 如何知道结果处理结果？
+- 如果客户端已经断开了link？
+
 [使用RPC模式][10]
 就是当普通http请求一样（有个msg ID）。server 会返回结果。结果存在reply_to 的queue (附上msgID)。 client 会去拿(根据msgID 知道对应上具体发送那个请求)。
 
 client 同时是rpc queue的producer & reply_queue 的consumer 
 server 同时是reply_queue的producer & rpc queue的consumer
+[客户等待返回时断开了怎么办](https://www.rabbitmq.com/direct-reply-to.html)
+使用rpc 模式时，利用reply to 去维持一个长的连接，但是并非一个新的queue。
+如果在等待回应的过程中，客户crash了，server是没办法去发送的回去的。客户理应重新再发一遍。
+server 端如何感知这个事情呢？(TBD)
 
 ![此处输入图片的描述][11]
 
@@ -290,7 +296,15 @@ https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-perform
   - [gitbook open-falcon][29]
   - [rabbitmq & spring amqp][30]
   - [可靠的消息系统][31]
-
+  - [Exponential Backoff and Jitter](https://www.awsarchitectureblog.com/2015/03/backoff.html)
+  - [Exponential Backoff with RabbitMQ](https://m.alphasights.com/exponential-backoff-with-rabbitmq-78386b9bec81)
+  - [RabbitMQ with Exponential Backoff](https://felipeelias.github.io/rabbitmq/2016/02/22/rabbitmq-exponential-backoff.html)
+  - [Easy Retries with RabbitMQ](https://gagnechris.wordpress.com/2015/09/19/easy-retries-with-rabbitmq/)
+  - [使用RabbitMQ的事件驱动微服务](https://mp.weixin.qq.com/s/1NH1K3St-6W8I71Rz7x4Yg)
+  - [10招，提升你的微服务架构可用性](https://mp.weixin.qq.com/s/W-Q4wmGeuSWNHn3cCnN4qw)
+  - [阿里RocketMQ如何解决消息的顺序&重复两大硬伤？](https://mp.weixin.qq.com/s/bdmWPU-5xuT8ijDR236SKA)
+  - [解决rabbitmq消息队列的顺序及重复消费问题](http://xiaorui.cc/2017/05/04/%E8%A7%A3%E5%86%B3rabbitmq%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E9%A1%BA%E5%BA%8F%E5%8F%8A%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9%E9%97%AE%E9%A2%98/)
+ 
 
 
   [1]: http://7xk67t.com1.z0.glb.clouddn.com/init.jpg
