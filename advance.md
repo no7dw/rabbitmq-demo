@@ -111,6 +111,12 @@ server 同时是reply_queue的producer & rpc queue的consumer
 如果在等待回应的过程中，客户crash了，server是没办法去发送的回去的。客户理应重新再发一遍。
 server 端如何感知这个事情呢？(TBD)
 
+需要优雅处理几件事情：
+   - server 端连不上 -- 重连or抛错
+   - client 端连接超时
+   - client 端rpc模式超时
+
+
 ![此处输入图片的描述][11]
 
 - what if rabbitmq-server is killed ？ 
