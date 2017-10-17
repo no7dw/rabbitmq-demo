@@ -4,5 +4,4 @@ node_modules
 config.dev.js
 config.prod.js
 config.js
-./rpc/config.dev.js
 

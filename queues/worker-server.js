@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 var amqp = require('amqplib/callback_api');
-
-amqp.connect('amqp://localhost', function(err, conn) {
+var config = require('../rpc/config.dev');
+console.log(config.RABBITMQ_URL)
+amqp.connect(config.RABBITMQ_URL, function(err, conn) {
   conn.createChannel(function(err, ch) {
     var q = 'task_queue';
 

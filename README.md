@@ -180,6 +180,11 @@ change timeout : worker wait 1 sec, task wait 10ms
 ### RPC
 [check this advance part](https://github.com/no7dw/rabbitmq-demo/blob/master/advance.md#faq)
 
+### docker
+
+	docker run -d -p 5671:5671 -p 5672:5672 -p 15672:15672  -p 25672:25672 -v  ~/data/rabbitmq-data/:/var/rabbitmq/lib  -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=password --name my-rabbitmq rabbitmq:3-management
+ 
+
   [1]: http://www.rabbitmq.com/img/tutorials/python-one.png
   [2]: http://www.rabbitmq.com/img/tutorials/python-two.png
   [3]: http://www.rabbitmq.com/img/tutorials/exchanges.png
