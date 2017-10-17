@@ -115,6 +115,10 @@ server 端如何感知这个事情呢？(TBD)
    - server 端连不上 -- 重连or抛错
    - client 端连接超时
    - client 端rpc模式超时
+   - 防重：server 端都要处理重复消息的问题，client 端要处理重复reply的问题
+
+server&client 端消息重复的演示：
+![重复问题](http://7xk67t.com1.z0.glb.clouddn.com/dulplicate.gif)   
 
 
 ![此处输入图片的描述][11]

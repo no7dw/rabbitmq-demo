@@ -1,7 +1,7 @@
 'use strict';
 
 const config = require('../config.dev')
-const amqp = require('amqplib').connect('amqp://' + config.username + ':' + config.password + '@ali3')
+const amqp = require('amqplib').connect('amqp://' + config.username + ':' + config.password + '@' + config.host)
 const co = require('co')
 const uuid = require('uuid');
 
@@ -47,7 +47,7 @@ function responseHandler(res, corr, conn) {
         // console.log(' [.] Got %s', JSON.stringify(res.content.toString() ));
         setTimeout(  () =>  {
             conn.close()
-        }, 50);
+        }, 5000);
     }
     return res.content
 };
@@ -59,14 +59,14 @@ exports.send = function * (msg, responseHandler) {
   yield sender(initConfig, msg, responseHandler );
 }
 
-// function onerror(err) {
-//     console.error(err.stack);
-// }
+function onerror(err) {
+    console.error(err.stack);
+}
 
-// co(function*() {
-//     let num = parseInt(args[0])
-//     let initConfig = yield init();
-//     yield [
-//         sender(initConfig, num.toString(), responseHandler),
-//     ]
-// }, onerror)
+co(function*() {
+    let num = parseInt(args[0])
+    let initConfig = yield init();
+    yield [
+        sender(initConfig, num.toString(), responseHandler),
+    ]
+}, onerror)
