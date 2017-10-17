@@ -36,7 +36,7 @@ function sender( msg , resHandler){
 function responseHandler(res, corr, conn){
   if (res.properties.correlationId == corr) {
     console.log(' [.] Got %s', res.content.toString());
-    setTimeout(function() { conn.close(); process.exit(0) }, 20000);
+    setTimeout(function() { conn.close(); process.exit(0) }, 100);
   }
   else{
     console.log(' [.] to disconnect client: Got %s', res.content.toString());
