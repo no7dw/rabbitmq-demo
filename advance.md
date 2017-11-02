@@ -131,6 +131,7 @@ server 同时是reply_queue的producer & rpc queue的consumer
    - 防重：server 端都要处理重复消息的问题，client 端要处理重复reply的问题
 
 ![流程解析](http://oqln5pzeb.bkt.clouddn.com/17-10-17/12401634.jpg)
+
 5断了的case：
 server&client 端消息重复的效果演示：
 ![重复问题](http://7xk67t.com1.z0.glb.clouddn.com/dulplicate.gif)   
@@ -167,6 +168,7 @@ server 端如何感知这个事情呢？(TBD)
 
 再来这张图：
 ![流程解析](http://oqln5pzeb.bkt.clouddn.com/17-10-17/12401634.jpg)
+
 3断了，客户重试。
 
 Client (A B)双节点， Server (C D)双节点。
@@ -176,7 +178,7 @@ A—>m1—>C
 B—>m2—>D  
 C想reply A的时候，A(down了) disconnect 了怎么办。A没办法收到，即便B还在正常工作。
 
-所以比较稳定的模式应该是这样
+所以比较稳定的模式应该是这样 working queue + pub/sub
 ![回调网关](http://oqln5pzeb.bkt.clouddn.com/17-10-17/32211417.jpg)
 
 - what if rabbitmq-server is killed ？ 
@@ -328,7 +330,19 @@ https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-perform
  - [高可用配置](http://www.cnblogs.com/flat_peach/archive/2013/04/07/3004008.html)
  - [高可用配置 mirror mode](http://88250.b3log.org/rabbitmq-clustering-ha)
 
+### 平滑过渡
+ 重启避免拿了消息处理到一半，挂掉的处理：[cancel link ref](https://www.rabbitmq.com/consumer-cancel.html)
 
+ - 收到重启消息进行reject
+ - 收到重启消息进行cancel
+
+  ```
+    var consumerInfo  ={}
+    consumerInfo = ch.consumer(queue, function(req)){
+      ...
+      ch.cancel(Object.keys(consumerInfo.consumer)[0])
+    }
+  ```
 
 ### 如果不选mq？
 拆解系统过程中，如果不选mq来替代http rest ，还有选择吗？
@@ -339,6 +353,18 @@ https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-perform
    - Raw TCP/UDP
    - Redis pub/sub
    - Retry http
+
+### Performance
+
+Docker 3GRAM CPU?
+DISK mode:
+ - 生产 ~8k/s
+ - 消费 ~1k/s
+
+RAM mode:
+ - 生产 ~10k/s
+ - 消费 ~2k/s
+
 
 ### 总结
 什么时候不使用MQ？
