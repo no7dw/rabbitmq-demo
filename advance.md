@@ -245,11 +245,15 @@ how:
    - 重启server端
    - 将“垃圾”消息队列，重新移动会正常队列，进行消费
 
+ - consume it [方向是按需消费有问题消息，不是删除][17]
 
- - comsume it [更优雅的方法][17]（推荐）
-
-更好的是跳过改消息with timeout，存储下来，如db，然后取下一个。
+如何更好的consume：
+   - 方法1：跳过改消息with timeout，存储下来，如db，然后取下一个。
 然后review，让程序重新对这些结果进行consume。
+   - 方法2： worker 对失败的消息设置最大重试次数，超过阈值则把发送到别的队列里面。通过后台、UI 界面监控/显示 这些消息。修正问题后，按需把此失败消息触发下重试。（推荐）
+
+上面的异常消息从worker表现来说，除了卡住之外，严重的还很可能导致worker 崩溃，甚至多个worker 集体的崩溃(另外一个worker 接了此消息，接着崩溃) -- 即所谓(catastrophic failover)。
+所以对队列的堆积情况监控是非常必要的。
 
 针对这种超时的处理，可以参考这个link：
 https://www.rabbitmq.com/dlx.html
